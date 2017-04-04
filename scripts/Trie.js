@@ -3,6 +3,7 @@ import Node from '../scripts/Node'
 export default class Trie {
   constructor () {
     this.root = new Node()
+    this.wordCount = 0
   }
 
   insert (word) {
@@ -18,18 +19,17 @@ export default class Trie {
     })
     currentNode.isWord = true;
     currentNode.address = word
+    this.wordCount ++
   }
 
   count () {
-
+    //should keep count of words in Trie
+    //after word has been inserted, counter increments
+    return this.wordCount
   }
 
   findNode (string) {
     let currentNode = this.root;
-
-    //enter a string
-    //drill through the Trie
-    //find address of node === string
 
     string.split('').forEach(letter => {
       if (currentNode.children[letter]) {

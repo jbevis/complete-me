@@ -21,7 +21,7 @@ describe('Trie', () => {
     let completion = new Trie ();
 
     completion.insert('art');
-     expect(completion.root.children.a.data).to.deep.equal('a')
+    expect(completion.root.children.a.data).to.deep.equal('a')
     expect(completion.root.children.a.children.r.data).to.deep.equal('r')
   })
 
@@ -79,17 +79,19 @@ describe('Trie', () => {
     expect(suggestion).to.deep.equal(['pizza']);
   })
 
-  it('should be able to suggest all words that start the same', () => {
+  it('should be able to suggest words that start with the same prefix', () => {
     let completion = new Trie ();
 
     completion.insert('ape');
     completion.insert('apes');
     completion.insert('apex');
     completion.insert('aperture');
+    completion.insert('apendage');
+
 
 
     let suggestion = completion.suggest('ap');
 
-    expect(suggestion).to.deep.equal(['ape', 'apes', 'apex', 'aperture']);
+    expect(suggestion).to.deep.equal(['ape', 'apes', 'apex', 'aperture', 'apendage']);
   })
 })

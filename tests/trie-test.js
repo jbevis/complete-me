@@ -3,28 +3,32 @@ import Trie from '../scripts/Trie'
 require ('locus');
 
 describe('Trie', () => {
-  let completion = new Trie ();
 
   it('should be an instance of a class', () => {
+    let completion = new Trie ();
 
     expect(completion).to.be.instanceOf(Trie);
   })
 
   it('should have a root node', () => {
+    let completion = new Trie ();
 
     expect(completion.root.data).to.equal(null);
     expect(completion.root.children).to.deep.equal({})
   })
 
   it('should be able to insert a new word into the tree', () => {
+    let completion = new Trie ();
+
     completion.insert('art');
-    // eval(locus)
-    expect(completion.root.children.a.data).to.deep.equal('a')
+     expect(completion.root.children.a.data).to.deep.equal('a')
     expect(completion.root.children.a.children.r.data).to.deep.equal('r')
   })
 
   it('should be able to append new nodes to existing words', () => {
-    // completion.insert('art');
+    let completion = new Trie ();
+
+    completion.insert('art');
     expect(completion.root.children.a.children.r.children.t.children).to.deep.equal({})
 
     completion.insert('arts');
@@ -32,25 +36,60 @@ describe('Trie', () => {
   })
 
   it('should be able to confirm if words have been added', () => {
-    // completion.insert('art');
+    let completion = new Trie ();
+
+    completion.insert('art');
     expect(completion.root.children.a.children.r.children.t.isWord).to.deep.equal(true)
 
-    // completion.insert('arts');
+    completion.insert('arts');
     expect(completion.root.children.a.children.r.children.t.children.s.isWord).to.deep.equal(true)
   })
 
   it('should be able to find specific nodes', () => {
-    // completion.insert('art');
-    let foundNode = completion.findNode('ar');
+    let completion = new Trie ();
 
-    expect(foundNode).to.equal(completion.root.children.a.children.r.address)
+    completion.insert('art');
+    completion.insert('pizza')
+    let foundNode = completion.findNode('ar');
+    let foundNode2 = completion.findNode('piz')
+    // console.log(foundNode2)
+
+    expect(foundNode.address).to.equal(completion.root.children.a.children.r.address)
+    expect(foundNode2.address).to.equal(completion.root.children.p.children.i.children.z.address)
+
   })
 
   it('should count the number of words in the trie', () => {
+    let completion = new Trie ();
+
+    expect(completion.wordCount).to.equal(0);
+    // eval(locus)
+    completion.insert('pizza');
+    completion.insert('art');
     expect(completion.wordCount).to.equal(2);
+  })
+
+  it('should be able to suggest words', () => {
+    let completion = new Trie ();
 
     completion.insert('pizza');
 
-    expect(completion.wordCount).to.equal(3);
+    let suggestion = completion.suggest('piz');
+
+    expect(suggestion).to.deep.equal(['pizza']);
+  })
+
+  it('should be able to suggest all words that start the same', () => {
+    let completion = new Trie ();
+
+    completion.insert('ape');
+    completion.insert('apes');
+    completion.insert('apex');
+    completion.insert('aperture');
+
+
+    let suggestion = completion.suggest('ap');
+
+    expect(suggestion).to.deep.equal(['ape', 'apes', 'apex', 'aperture']);
   })
 })

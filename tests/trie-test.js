@@ -24,7 +24,7 @@ describe('Trie', () => {
   })
 
   it('should be able to append new nodes to existing words', () => {
-    completion.insert('art');
+    // completion.insert('art');
     expect(completion.root.children.a.children.r.children.t.children).to.deep.equal({})
 
     completion.insert('arts');
@@ -32,17 +32,25 @@ describe('Trie', () => {
   })
 
   it('should be able to confirm if words have been added', () => {
-    completion.insert('art');
+    // completion.insert('art');
     expect(completion.root.children.a.children.r.children.t.isWord).to.deep.equal(true)
 
-    completion.insert('arts');
+    // completion.insert('arts');
     expect(completion.root.children.a.children.r.children.t.children.s.isWord).to.deep.equal(true)
   })
 
   it('should be able to find specific nodes', () => {
-    completion.insert('art');
+    // completion.insert('art');
     let foundNode = completion.findNode('ar');
 
-    expect(foundNode).to.equal(completion.root.children.a.children.r.dat)
+    expect(foundNode).to.equal(completion.root.children.a.children.r.address)
+  })
+
+  it('should count the number of words in the trie', () => {
+    expect(completion.wordCount).to.equal(2);
+
+    completion.insert('pizza');
+
+    expect(completion.wordCount).to.equal(3);
   })
 })

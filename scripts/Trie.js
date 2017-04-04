@@ -9,18 +9,18 @@ export default class Trie {
   insert (word) {
     let currentNode = this.root;
     let letters = word.split('');
-    let accumLetters = '';
+    // let accumLetters = '';
 
     letters.forEach(letter => {
       if (currentNode.children[letter]) {
-        accumLetters = accumLetters + letter;
+        // accumLetters = accumLetters + letter;
         return currentNode = currentNode.children[letter]
 
       }
       currentNode.children[letter] = new Node(letter);
       currentNode = currentNode.children[letter];
-      accumLetters = accumLetters + letter;
-      currentNode.address = accumLetters;
+      // accumLetters = accumLetters + letter;
+      // currentNode.address = accumLetters;
     })
     currentNode.isWord = true;
     this.wordCount ++
@@ -41,9 +41,9 @@ export default class Trie {
       }
     })
 
-    if (currentNode.address === string) {
+    // if (currentNode.address === string) {
       return currentNode;
-    }
+    // }
   }
 
   // suggest (prefix, suggested) {
@@ -67,21 +67,19 @@ export default class Trie {
   //   return suggestions
   // }
 
-  suggest (prefix) {
+  suggest (prefix, suggested) {
     let node = this.findNode(prefix);
-    let suggestions = []
+    let suggestions = suggested || [];
 
-    const filterKeys = (node) => {
-      if (node.isWord) {
-        suggestions.push(node.address)
-      }
-
-      Object.keys(node.children).forEach(key => {
-        console.log(node.children[key])
-        filterKeys(node.children[key])
-      })
+    if (node.isWord) {
+      console.log(prefix)
+      suggestions.push(prefix)
     }
-    filterKeys(node)
+
+    Object.keys(node.children).forEach(key => {
+      this.suggest(prefix + key, suggestions)
+    })
     return suggestions
   }
+
 }

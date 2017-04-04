@@ -1,4 +1,6 @@
-import Node from '../scripts/Node'
+import Node from '../scripts/Node';
+import fs from 'fs';
+const text = "/usr/share/dict/words"
 
 export default class Trie {
   constructor () {
@@ -9,26 +11,20 @@ export default class Trie {
   insert (word) {
     let currentNode = this.root;
     let letters = word.split('');
-    // let accumLetters = '';
 
     letters.forEach(letter => {
       if (currentNode.children[letter]) {
-        // accumLetters = accumLetters + letter;
         return currentNode = currentNode.children[letter]
 
       }
       currentNode.children[letter] = new Node(letter);
       currentNode = currentNode.children[letter];
-      // accumLetters = accumLetters + letter;
-      // currentNode.address = accumLetters;
     })
     currentNode.isWord = true;
     this.wordCount ++
   }
 
   count () {
-    //should keep count of words in Trie
-    //after word has been inserted, counter increments
     return this.wordCount;
   }
 
@@ -40,39 +36,14 @@ export default class Trie {
         currentNode = currentNode.children[letter]
       }
     })
-
-    // if (currentNode.address === string) {
-      return currentNode;
-    // }
+    return currentNode;
   }
-
-  // suggest (prefix, suggested) {
-  //
-  //   let suggestedNode = this.findNode(prefix);
-  //   var suggestions = suggested || [];
-  //
-  //   if (suggestedNode.isWord) {
-  //     suggestions.push(suggestedNode.address)
-  //   }
-  //
-  //   if (!suggestedNode.isWord) {
-  //     let nextKeys = Object.keys(suggestedNode.children)
-  //     let nextSuggestion = nextKeys.reduce((accu, key) => {
-  //       accu = prefix.concat(key);
-  //       return accu;
-  //     }, '')
-  //
-  //     this.suggest(nextSuggestion, suggestions);
-  //   }
-  //   return suggestions
-  // }
 
   suggest (prefix, suggested) {
     let node = this.findNode(prefix);
     let suggestions = suggested || [];
 
     if (node.isWord) {
-      console.log(prefix)
       suggestions.push(prefix)
     }
 
@@ -82,4 +53,11 @@ export default class Trie {
     return suggestions
   }
 
+  populate () {
+    let dictionary = fs.readFileSync(text).toString().trim().split('\n');
+
+    dictionary.forEach(word => {
+      this.insert(word)
+    })
+  }
 }

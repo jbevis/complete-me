@@ -86,12 +86,26 @@ describe('Trie', () => {
     completion.insert('apes');
     completion.insert('apex');
     completion.insert('aperture');
-    completion.insert('apendage');
 
+    let suggestion = completion.suggest('ape');
 
+    expect(suggestion).to.deep.equal(['ape', 'apes', 'apex', 'aperture']);
+  })
 
-    let suggestion = completion.suggest('ap');
+  it('should be able to populate a dictionary', () => {
+    let completion = new Trie ();
 
-    expect(suggestion).to.deep.equal(['ape', 'apes', 'apex', 'aperture', 'apendage']);
+    completion.populate();
+
+    expect(completion.count()).to.equal(235886);
+  })
+
+  it('should be able to suggest from the new dictionary', () => {
+    let completion = new Trie ();
+
+    completion.populate();
+    let pizzaSuggestions = completion.suggest('piz')
+
+    expect(pizzaSuggestions).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"])
   })
 })

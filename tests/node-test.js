@@ -1,13 +1,12 @@
 import { expect } from 'chai';
 import Node from '../scripts/Node'
 
-describe('Node', () => {
+describe('Testing Node class', () => {
   let nodeA = new Node('A');
 
   it('should be an instance of Node', () => {
-    let node = new Node ();
 
-    expect(node).to.be.instanceOf(Node);
+    expect(nodeA).to.be.instanceOf(Node);
   })
 
   it('should have a data attribute', () => {
@@ -23,5 +22,10 @@ describe('Node', () => {
   it('should have a children attribute', () => {
 
     expect(nodeA.children).to.deep.equal({});
+  })
+
+  it('should have a property of timesSelected that defaults to 0', () => {
+
+    expect(nodeA.timesSelected).to.equal(0);
   })
 })

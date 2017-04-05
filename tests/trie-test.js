@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Trie from '../scripts/Trie'
 require ('locus');
 
-describe('Trie', () => {
+describe('Testing Trie class', () => {
 
   it('should be an instance of a class', () => {
     let completion = new Trie ();
@@ -16,6 +16,9 @@ describe('Trie', () => {
     expect(completion.root.data).to.equal(null);
     expect(completion.root.children).to.deep.equal({})
   })
+})
+
+describe('Testing Trie insert method', () => {
 
   it('should be able to insert a new word into the tree', () => {
     let completion = new Trie ();
@@ -44,6 +47,9 @@ describe('Trie', () => {
     completion.insert('arts');
     expect(completion.root.children.a.children.r.children.t.children.s.isWord).to.deep.equal(true)
   })
+})
+
+describe('Testing Trie find method', () => {
 
   it('should be able to find specific nodes', () => {
     let completion = new Trie ();
@@ -53,8 +59,8 @@ describe('Trie', () => {
     let foundNode = completion.findNode('ar');
     let foundNode2 = completion.findNode('piz')
 
-    expect(foundNode.address).to.equal(completion.root.children.a.children.r.address)
-    expect(foundNode2.address).to.equal(completion.root.children.p.children.i.children.z.address)
+    expect(foundNode).to.equal(completion.root.children.a.children.r)
+    expect(foundNode2).to.equal(completion.root.children.p.children.i.children.z)
   })
 
   it('should count the number of words in the trie', () => {
@@ -65,6 +71,9 @@ describe('Trie', () => {
     completion.insert('art');
     expect(completion.wordCount).to.equal(2);
   })
+})
+
+describe('Testing Trie sugget method', () => {
 
   it('should be able to suggest words', () => {
     let completion = new Trie ();
@@ -105,8 +114,11 @@ describe('Trie', () => {
 
     expect(pizzaSuggestions).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
   })
+})
 
-  it.only('should be able to remember user selections', () => {
+describe('Testing Trie select method', () => {
+
+  it('should be able to remember user selections', () => {
     let completion = new Trie ();
 
     completion.populate();
@@ -120,7 +132,7 @@ describe('Trie', () => {
     expect(newSuggestions).to.deep.equal(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"]);
   })
 
-  it.only('should be able to sort many selected words', () => {
+  it('should be able to sort many selected words', () => {
     let completion = new Trie ();
 
     completion.populate();

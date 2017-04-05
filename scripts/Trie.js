@@ -41,15 +41,24 @@ export default class Trie {
 
   suggest (prefix, suggested) {
     let node = this.findNode(prefix);
-    let suggestions = suggested || [];
+    var suggestionCount = suggested || [];
 
     if (node.isWord) {
-      suggestions.push(prefix)
+      suggestionCount.push({word: prefix, preference: node.timesSelected})
     }
 
     Object.keys(node.children).forEach(key => {
-      this.suggest(prefix + key, suggestions)
+      this.suggest(prefix + key, suggestionCount)
     })
+
+    suggestionCount.sort((a, b) => {
+      return b.preference - a.preference
+    })
+
+    let suggestions = suggestionCount.map (obj => {
+      return obj['word']
+    })
+
     return suggestions
   }
 
@@ -59,5 +68,16 @@ export default class Trie {
     dictionary.forEach(word => {
       this.insert(word)
     })
+  }
+
+  selectWord (prefix, selection) {
+    let suggested = this.suggest(prefix);
+    let selectedWord = suggested.find(word => {
+      return word === selection
+    })
+
+    let foundNode = this.findNode(selectedWord)
+    
+    foundNode.timesSelected++;
   }
 }

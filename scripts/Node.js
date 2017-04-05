@@ -3,6 +3,6 @@ export default class Node {
     this.data = data;
     this.isWord = isWord;
     this.children = {};
-    // this.address;
+    this.timesSelected = 0;
   }
 }

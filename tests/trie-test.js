@@ -52,18 +52,15 @@ describe('Trie', () => {
     completion.insert('pizza')
     let foundNode = completion.findNode('ar');
     let foundNode2 = completion.findNode('piz')
-    // console.log(foundNode2)
 
     expect(foundNode.address).to.equal(completion.root.children.a.children.r.address)
     expect(foundNode2.address).to.equal(completion.root.children.p.children.i.children.z.address)
-
   })
 
   it('should count the number of words in the trie', () => {
     let completion = new Trie ();
 
     expect(completion.wordCount).to.equal(0);
-    // eval(locus)
     completion.insert('pizza');
     completion.insert('art');
     expect(completion.wordCount).to.equal(2);
@@ -106,6 +103,39 @@ describe('Trie', () => {
     completion.populate();
     let pizzaSuggestions = completion.suggest('piz')
 
-    expect(pizzaSuggestions).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"])
+    expect(pizzaSuggestions).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+  })
+
+  it.only('should be able to remember user selections', () => {
+    let completion = new Trie ();
+
+    completion.populate();
+    let pizzaSuggestions = completion.suggest('piz');
+
+    expect(pizzaSuggestions).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+
+    completion.selectWord('piz', 'pizzeria');
+    let newSuggestions = completion.suggest('piz')
+
+    expect(newSuggestions).to.deep.equal(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"]);
+  })
+
+  it.only('should be able to sort many selected words', () => {
+    let completion = new Trie ();
+
+    completion.populate();
+    let pizzaSuggestions = completion.suggest('piz');
+
+    expect(pizzaSuggestions).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+
+    completion.selectWord('piz', 'pizzeria');
+    completion.selectWord('piz', 'pizzeria');
+    completion.selectWord('piz', 'pizzeria');
+    completion.selectWord('piz', 'pizzle');
+    completion.selectWord('piz', 'pizzle');
+    completion.selectWord('piz', 'pizzicato');
+    let newSuggestions = completion.suggest('piz')
+
+    expect(newSuggestions).to.deep.equal(["pizzeria", "pizzle", "pizzicato", "pize", "pizza"]);
   })
 })

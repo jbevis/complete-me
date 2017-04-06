@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { assert } from 'chai'
 import Trie from '../scripts/Trie'
 require ('locus');
 
@@ -185,7 +184,8 @@ describe('Testing Trie select method', () => {
     completion.populate();
     let bananSuggestions = completion.suggest('banan');
 
-    expect(bananSuggestions).to.deep.equal(["banana", "bananaland", "bananalander", "banande", "bananist", 'bananivorous']);
+    expect(bananSuggestions).to.deep.equal(["banana", "bananaland", "bananalander",
+      "banande", "bananist", 'bananivorous']);
 
     completion.selectWord('banan', 'bananivorous');
     completion.selectWord('banan', 'bananivorous');
@@ -195,6 +195,7 @@ describe('Testing Trie select method', () => {
     completion.selectWord('banan', 'bananist');
     let newSuggestions = completion.suggest('banan')
 
-    expect(newSuggestions).to.deep.equal(['bananivorous', 'banana', 'bananist', "bananaland", "bananalander", "banande",]);
+    expect(newSuggestions).to.deep.equal(['bananivorous', 'banana', 'bananist',
+      "bananaland", "bananalander", "banande"]);
   })
 })

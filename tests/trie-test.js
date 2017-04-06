@@ -83,27 +83,21 @@ describe('Testing Trie count method', () => {
 
 describe('Testing Trie find method', () => {
 
-  it('should be able to find a specific nodes', () => {
+  it('should be able to find a specific node', () => {
     let completion = new Trie ();
+    let word1 = 'bean';
+    let location = completion.root;
+    const locateNodes = (string) => {
+      string.split('').forEach(letter => {
+        expect(location.children[letter].data).to.equal(letter)
+        location = location.children[letter]
+      })
+    }
 
-    completion.insert('art');
-    let foundNode = completion.findNode('ar');
-
-    expect(foundNode).to.equal(completion.root.children.a.children.r)
+    completion.insert(word1);
+    locateNodes(word1);
   })
-
-  it('should be able to find specific nodes', () => {
-    let completion = new Trie ();
-
-    completion.insert('cool');
-    completion.insert('beans')
-    let foundNode = completion.findNode('co');
-    let foundNode2 = completion.findNode('bea')
-
-    expect(foundNode).to.equal(completion.root.children.c.children.o)
-    expect(foundNode2).to.equal(completion.root.children.b.children.e.children.a)
-  })
-})
+});
 
 describe('Testing Trie suggest method', () => {
 

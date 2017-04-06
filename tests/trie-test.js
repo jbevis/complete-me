@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { assert } from 'chai'
 import Trie from '../scripts/Trie'
 require ('locus');
 
@@ -49,31 +50,65 @@ describe('Testing Trie insert method', () => {
   })
 })
 
+describe('Testing Trie count method', () => {
+
+  it('should be able to count the number of words in the trie', () => {
+    let completion = new Trie ();
+
+    completion.insert('cool');
+    completion.insert('beans');
+    completion.insert('banana');
+    completion.insert('sandwiches');
+
+    expect(completion.count()).to.equal(4)
+  })
+
+  it('should not count words as duplicates', () => {
+    let completion = new Trie ();
+
+    completion.insert('cool');
+    completion.insert('cool');
+    completion.insert('beans');
+
+    expect(completion.count()).to.equal(2)
+  })
+
+  it('should be able to populate a dictionary', () => {
+    let completion = new Trie ();
+
+    completion.populate();
+
+    expect(completion.count()).to.equal(234371);
+  })
+})
+
 describe('Testing Trie find method', () => {
+
+  it('should be able to find a specific nodes', () => {
+    let completion = new Trie ();
+
+    completion.insert('art');
+    let foundNode = completion.findNode('ar');
+
+    expect(foundNode).to.equal(completion.root.children.a.children.r)
+  })
 
   it('should be able to find specific nodes', () => {
     let completion = new Trie ();
 
-    completion.insert('art');
-    completion.insert('pizza')
-    let foundNode = completion.findNode('ar');
-    let foundNode2 = completion.findNode('piz')
+    completion.insert('cool');
+    completion.insert('beans')
+    let foundNode = completion.findNode('co');
+    let foundNode2 = completion.findNode('bea')
 
-    expect(foundNode).to.equal(completion.root.children.a.children.r)
-    expect(foundNode2).to.equal(completion.root.children.p.children.i.children.z)
+    expect(foundNode).to.equal(completion.root.children.c.children.o)
+    expect(foundNode2).to.equal(completion.root.children.b.children.e.children.a)
   })
 
-  it('should count the number of words in the trie', () => {
-    let completion = new Trie ();
 
-    expect(completion.wordCount).to.equal(0);
-    completion.insert('pizza');
-    completion.insert('art');
-    expect(completion.wordCount).to.equal(2);
-  })
 })
 
-describe('Testing Trie sugget method', () => {
+describe('Testing Trie suggest method', () => {
 
   it('should be able to suggest words', () => {
     let completion = new Trie ();
@@ -98,13 +133,6 @@ describe('Testing Trie sugget method', () => {
     expect(suggestion).to.deep.equal(['ape', 'apes', 'apex', 'aperture']);
   })
 
-  it('should be able to populate a dictionary', () => {
-    let completion = new Trie ();
-
-    completion.populate();
-
-    expect(completion.count()).to.equal(235886);
-  })
 
   it('should be able to suggest from the new dictionary', () => {
     let completion = new Trie ();
@@ -149,5 +177,24 @@ describe('Testing Trie select method', () => {
     let newSuggestions = completion.suggest('piz')
 
     expect(newSuggestions).to.deep.equal(["pizzeria", "pizzle", "pizzicato", "pize", "pizza"]);
+  })
+
+  it('should be able to sort new set of selected words', () => {
+    let completion = new Trie ();
+
+    completion.populate();
+    let bananSuggestions = completion.suggest('banan');
+
+    expect(bananSuggestions).to.deep.equal(["banana", "bananaland", "bananalander", "banande", "bananist", 'bananivorous']);
+
+    completion.selectWord('banan', 'bananivorous');
+    completion.selectWord('banan', 'bananivorous');
+    completion.selectWord('banan', 'bananivorous');
+    completion.selectWord('banan', 'banana');
+    completion.selectWord('banan', 'banana');
+    completion.selectWord('banan', 'bananist');
+    let newSuggestions = completion.suggest('banan')
+
+    expect(newSuggestions).to.deep.equal(['bananivorous', 'banana', 'bananist', "bananaland", "bananalander", "banande",]);
   })
 })

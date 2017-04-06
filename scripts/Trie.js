@@ -25,7 +25,27 @@ export default class Trie {
   }
 
   count () {
-    return this.wordCount;
+    let currentNode = this.root;
+
+    const filterKeys = (currentNode) => {
+      let counter = 0;
+
+      if (currentNode.isWord) {
+        counter++
+      }
+
+      if (!currentNode.children) {
+        return counter;
+
+      } else {
+        Object.keys(currentNode.children).forEach(key => {
+          counter += filterKeys(currentNode.children[key])
+        })
+      }
+      return counter
+    }
+
+    return filterKeys(currentNode)
   }
 
   findNode (string) {
@@ -66,7 +86,7 @@ export default class Trie {
     let dictionary = fs.readFileSync(text).toString().trim().split('\n');
 
     dictionary.forEach(word => {
-      this.insert(word)
+      this.insert(word.toLowerCase())
     })
   }
 
@@ -77,7 +97,7 @@ export default class Trie {
     })
 
     let foundNode = this.findNode(selectedWord)
-    
+
     foundNode.timesSelected++;
   }
 }

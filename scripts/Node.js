@@ -1,7 +1,7 @@
 export default class Node {
-  constructor (data = null, isWord = false) {
+  constructor (data = null) {
     this.data = data;
-    this.isWord = isWord;
+    this.isWord = false;
     this.children = {};
     this.timesSelected = 0;
   }

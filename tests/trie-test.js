@@ -103,8 +103,6 @@ describe('Testing Trie find method', () => {
     expect(foundNode).to.equal(completion.root.children.c.children.o)
     expect(foundNode2).to.equal(completion.root.children.b.children.e.children.a)
   })
-
-
 })
 
 describe('Testing Trie suggest method', () => {

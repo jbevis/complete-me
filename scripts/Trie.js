@@ -5,7 +5,6 @@ const text = "/usr/share/dict/words"
 export default class Trie {
   constructor () {
     this.root = new Node()
-    this.wordCount = 0
   }
 
   insert (word) {
@@ -21,7 +20,6 @@ export default class Trie {
       currentNode = currentNode.children[letter];
     })
     currentNode.isWord = true;
-    this.wordCount ++
   }
 
   count () {
